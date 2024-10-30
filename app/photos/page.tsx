@@ -1,8 +1,8 @@
-import { fetchPhotos } from '../utils';
+import { fetchData } from '../utils';
 import PhotoGrid from './photo-grid';
 
-const Overview = async () => {
-  const { photos, nextPageUrl } = await fetchPhotos();
+const Photos = async () => {
+  const { photos, next_page } = await fetchData('https://api.pexels.com/v1/curated?page=1&per_page=10');
 
   return (
     <div>
@@ -13,9 +13,9 @@ const Overview = async () => {
           Pexels
         </a>
       </p>
-      <PhotoGrid initialPhotos={photos} initialNextPageUrl={nextPageUrl} />
+      <PhotoGrid initialPhotos={photos} initialNextPageUrl={next_page} />
     </div>
   );
 };
 
-export default Overview;
+export default Photos;

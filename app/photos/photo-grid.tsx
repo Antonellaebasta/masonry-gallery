@@ -1,10 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { fetchPhotos } from '../utils';
+import { fetchData } from '../utils';
 import { PhotoProps, PhotoGridProps } from '../types';
 
 const INTERSECTION_OBSERVER_OPTIONS = {
@@ -12,8 +13,7 @@ const INTERSECTION_OBSERVER_OPTIONS = {
   rootMargin: '0px',
   threshold: 1.0,
 };
-const EAGER_LOAD_THRESHOLD = 20;
-const IMG_SIZES = '(max-width: 480px) 280px, (max-width: 768px) 640px, (max-width: 1024px) 768px, 940px';
+const EAGER_LOAD_THRESHOLD = 10;
 
 const Grid = styled.div`
   column-count: 4;
@@ -73,7 +73,7 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
     if (!nextPageUrl) return;
 
     try {
-      const { photos: newPhotos, nextPageUrl: newNextPageUrl } = await fetchPhotos(`/api/photos?pageUrl=${nextPageUrl}`);
+      const { photos: newPhotos, next_page: newNextPageUrl } = await fetchData(nextPageUrl);
       setPhotos((prev) => [...prev, ...newPhotos]);
       setNextPageUrl(newNextPageUrl);
     } catch (error) {
@@ -109,17 +109,18 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
       <Grid>
         {photos?.map(({ id, src, alt, width, height }: PhotoProps, index: number) => (
           <PhotoWrapper key={`${id}-${index}`}>
+            <Link href={`/photo/${id}`}>
             <Image
+              id={`${index}`}
               src={src.large}
               alt={alt}
               loading={index <= EAGER_LOAD_THRESHOLD ? 'eager' : 'lazy'}
-              layout="responsive"
-              sizes={IMG_SIZES}
+              priority={index === 0}
               width={width}
               height={height}
-              placeholder="blur"
-              blurDataURL={src.tiny}
+              style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
             />
+            </Link>
           </PhotoWrapper>
         ))}
       </Grid>
