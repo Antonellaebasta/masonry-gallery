@@ -2,13 +2,25 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+1. Checkout the project
+
+```bash
+git clone git@github.com:Antonellaebasta/masonry-gallery.git
+```
+
+2. Install dependencies
+
+```bash
+yarn
+```
+
+3. Run development server
 
 ```bash
 yarn dev
 ```
 
-Open [http://localhost:3000/photos](http://localhost:3000/photos) with your browser to see the result.
+4. Open [http://localhost:3000/photos](http://localhost:3000/photos) with your browser to see the result
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
