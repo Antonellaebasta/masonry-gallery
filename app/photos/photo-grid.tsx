@@ -97,7 +97,6 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
           <PhotoWrapper key={`${id}-${index}`}>
             <Link href={`/photo/${id}`}>
             <Image
-              id={`${index}`}
               src={src.large}
               alt={alt}
               loading={index <= EAGER_LOAD_THRESHOLD ? 'eager' : 'lazy'}
