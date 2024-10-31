@@ -10,8 +10,8 @@ const Photos = async () => {
       <div>
         <h1>Masonry Grid Layout</h1>
         <p>
-          Photos provided by{" "}
-          <a href="https://www.pexels.com" target="_">
+          Photos provided by{' '}
+          <a href='https://www.pexels.com' target='_blank'>
             Pexels
           </a>
         </p>
