@@ -30,6 +30,7 @@ To enhance the performance of the application, several optimizations have been i
 1. **Lazy Loading Images**:
    - Images are loaded only when they come into the viewport, reducing initial load time and resource usage.
    - Utilized the Next.js Image component, which automatically optimizes images for performance, handling responsive image sizes.
+   - [Priority](https://nextjs.org/docs/pages/api-reference/components/image#priority) is set to true if img index is 0, ensuring the first image is loaded eagerly. For other images, the loading strategy switches between 'eager' and 'lazy' based on whether the index is less than or equal to the EAGER_LOAD_THRESHOLD (set to 10).
 
 2. **Intersection Observer**:
    - Utilized the Intersection Observer API to efficiently handle image loading based on visibility, improving the user experience during scrolling.
