@@ -1,4 +1,4 @@
-export interface ImageSrcProps {
+interface ImageSrcProps {
   original: string;
   large2x: string;
   large: string;

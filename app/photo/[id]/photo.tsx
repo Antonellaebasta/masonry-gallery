@@ -23,6 +23,7 @@ const Description = styled.p`
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
+  max-height: 800px;
   aspect-ratio: 16 / 9;
 
   @media (max-width: 1024px) {

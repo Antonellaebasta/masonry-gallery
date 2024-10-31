@@ -7,11 +7,12 @@ import styled from 'styled-components';
 
 import { fetchData } from '../utils';
 import { PhotoProps, PhotoGridProps } from '../types';
+import ErrorMessage from '../components/error-message';
 
 const INTERSECTION_OBSERVER_OPTIONS = {
   root: null,
   rootMargin: '0px',
-  threshold: 1.0,
+  threshold: 0.5,
 };
 const EAGER_LOAD_THRESHOLD = 10;
 
@@ -20,6 +21,7 @@ const Grid = styled.div`
   column-gap: 20px;
   margin: 16px;
   content-visibility: auto;
+  contain-intrinsic-size: 3 / 2;
 
   @media (max-width: 1024px) {
     column-count: 3;
@@ -46,23 +48,6 @@ const IntersectionTarget = styled.div`
   margin: 20px;
 `;
 
-const ErrorMessageContainer = styled.div`
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  padding: 16px;
-  border-radius: 8px;
-  margin: 16px;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-
-  &::before {
-    content: '⚠️';
-    margin-right: 10px;
-  }
-`;
-
 const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
   const [photos, setPhotos] = useState(initialPhotos);
   const [nextPageUrl, setNextPageUrl] = useState(initialNextPageUrl);
@@ -73,7 +58,8 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
     if (!nextPageUrl) return;
 
     try {
-      const { photos: newPhotos, next_page: newNextPageUrl } = await fetchData(nextPageUrl);
+      const { photos: newPhotos, next_page: newNextPageUrl } = await fetchData(`/api/photos?pageUrl=${nextPageUrl}`);
+
       setPhotos((prev) => [...prev, ...newPhotos]);
       setNextPageUrl(newNextPageUrl);
     } catch (error) {
@@ -102,7 +88,7 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
         observer.unobserve(target);
       }
     };
-  }, [observerRef, nextPageUrl, loadMorePhotos]);
+  }, [nextPageUrl, loadMorePhotos]);
 
   return (
     <>
@@ -124,7 +110,7 @@ const PhotoGrid = ({ initialPhotos, initialNextPageUrl }: PhotoGridProps) => {
           </PhotoWrapper>
         ))}
       </Grid>
-      {error && <ErrorMessageContainer>{error}</ErrorMessageContainer>}
+      {error && <ErrorMessage message={error} />}
       <IntersectionTarget ref={observerRef} />
     </>
   );
